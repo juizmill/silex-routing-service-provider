@@ -19,7 +19,7 @@ class RoutingServiceProviderTest extends \PHPUnit_Framework_TestCase
         'assert' => array(
             'id' => 'regexp_id',
             'name' => 'regexp_name'
-        )
+        ),
     );
 
     /**
@@ -516,5 +516,23 @@ class RoutingServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $routingServiceProvider->addRoute($app, $route);
 
+    }
+
+    /**
+     * @expectedException \BadMethodCallException
+     */
+    public function testInvalidSecurityRoute()
+    {
+        $app = new Application();
+        $routingServiceProvider = new RoutingServiceProvider();
+        $route = array(
+            'pattern' => '/foo',
+            'controller' => 'MJanssen\Controller\FooController::fooAction',
+            'method' => array('get'),
+            'secure' => array('ROLE_ADMIN')
+        );
+
+        $routingServiceProvider->addRoute($app, $route);
+        $app['controllers']->flush();
     }
 }

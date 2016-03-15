@@ -95,7 +95,7 @@ class RoutingServiceProvider implements ServiceProviderInterface
                 join('|', array_map('strtoupper', $route['method']))
             );
 
-        $supportedProperties = array('value', 'assert', 'convert', 'before', 'after');
+        $supportedProperties = array('value', 'assert', 'convert', 'before', 'after', 'secure');
         foreach ($supportedProperties AS $property) {
             if (isset($route[$property])) {
                 $this->addActions($controller, $route[$property], $property);
@@ -137,7 +137,7 @@ class RoutingServiceProvider implements ServiceProviderInterface
             throw new InvalidArgumentException('Required parameter (pattern/method/controller) is not set.');
         }
 
-        $arrayParameters = array('method', 'assert', 'value');
+        $arrayParameters = array('method', 'assert', 'value', 'secure');
 
         foreach ($arrayParameters as $parameter) {
             if (isset($route[$parameter]) && !is_array($route[$parameter])) {
