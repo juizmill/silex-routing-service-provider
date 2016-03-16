@@ -1,10 +1,10 @@
 <?php
 namespace MJanssen\Provider;
 
-use InvalidArgumentException;
-use Silex\Application;
-use Silex\Controller;
 use Silex\Route;
+use Silex\Controller;
+use Silex\Application;
+use InvalidArgumentException;
 use Silex\ServiceProviderInterface;
 
 /**
@@ -137,7 +137,7 @@ class RoutingServiceProvider implements ServiceProviderInterface
             throw new InvalidArgumentException('Required parameter (pattern/method/controller) is not set.');
         }
 
-        $arrayParameters = array('method', 'assert', 'value', 'secure');
+        $arrayParameters = array('method', 'assert', 'value');
 
         foreach ($arrayParameters as $parameter) {
             if (isset($route[$parameter]) && !is_array($route[$parameter])) {
@@ -207,6 +207,9 @@ class RoutingServiceProvider implements ServiceProviderInterface
                 case 'before':
                     $this->addBeforeAfterMiddleware($controller, $type, $value);
                     break;
+                case 'secure':
+                    $this->addSecure($controller, $type, $actions);
+                    break;
                 default:
                     $this->addAction($controller, $name, $value, $type);
                     break;
@@ -223,6 +226,16 @@ class RoutingServiceProvider implements ServiceProviderInterface
     protected function addAction(Controller $controller, $name, $value, $type)
     {
         call_user_func_array(array($controller, $type), array($name, $value));
+    }
+
+    /**
+     * @param Controller $controller
+     * @param $type
+     * @param array $values
+     */
+    protected function addSecure(Controller $controller, $type, Array $values)
+    {
+        call_user_func_array(array($controller, $type), $values);
     }
 
     protected function isClosure($param)
