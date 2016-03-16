@@ -24,6 +24,7 @@
     "igorw/config-service-provider": "Allows registering providers with configuration"
   },
   "require-dev": {
+    "symfony/security": "v2.7.5",
     "phpunit/phpunit" : "4.*",
     "scrutinizer/ocular": "~1.1"
   },
